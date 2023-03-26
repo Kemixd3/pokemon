@@ -78,10 +78,15 @@
     </form>
     
     
-    <div id="pokemon-cards">
-      <!-- Display pokemon cards here -->
-    </div>
-    
+   <!-- Pokemon Cards -->
+<div id="pokemon-cards"></div>
+
+<!-- Pokemon Dialog -->
+<dialog id="pokemon-dialog">
+  <div id="pokemon-dialog-content"></div>
+  <button id="close-dialog-btn">Close</button>
+</dialog>
+
     <script src="https://www.gstatic.com/firebasejs/8.4.2/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.4.2/firebase-database.js"></script>
     <script src="script.js"></script>
@@ -109,7 +114,67 @@
       const app = initializeApp(firebaseConfig);
       const analytics = getAnalytics(app);
     </script>
-  
+  <style type="text/css">
+    .pokemon-card {
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0,0,0,.1);
+  display: inline-block;
+  margin: 10px;
+  max-width: 300px;
+  overflow: hidden;
+  text-align: center;
+}
+
+.pokemon-card h2 {
+  margin-top: 0;
+}
+
+.pokemon-card img {
+  width: 200px;
+  height: 200px;
+  object-fit: contain;
+}
+
+.view-more-btn {
+  background-color: #f44336;
+  border: none;
+  color: white;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin-top: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.view-more-btn:hover {
+  background-color: #ff6659;
+}
+
+.close-dialog-btn {
+  background-color: #ccc;
+  border: none;
+  color: #fff;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin-top: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.close-dialog-btn:hover {
+  background-color: #999;
+}
+
+    </style>
   
   </body>
 </html>

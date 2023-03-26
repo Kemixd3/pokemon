@@ -116,39 +116,119 @@ function getJsonFromUrl(url) {
 }
 
 
-function quickAddPokemon() {
-  fetch('pokemon.json')
-    .then(response => response.json())
-    .then(data => {
-      const pokemonRef = firebase.database().ref('pokemon');
-      const newPokemonRef = pokemonRef.push();
 
-      newPokemonRef.set({
-        name: data.name,
-        description: data.description,
-        ability: data.ability,
-        image: data.image,
-        footprint: data.footprint,
-        dexindex: data.dexindex,
-        type: data.type,
-        subtype: data.subtype,
-        weaknesses: data.weaknesses,
-        gender: data.gender,
-        weight: data.weight,
-        height: data.height,
-        generation: data.generation,
-        spilversion: data.spilversion,
-        canEvolve: data.canEvolve,
-        statsHP: data.statsHP,
-        statsAttack: data.statsAttack,
-        statsDefence: data.statsDefence,
-        statsSpecialAttack: data.statsSpecialAttack,
-        statsSpecialDefence: data.statsSpecialDefence,
-        statsSpeed: data.statsSpeed,
+
+
+
+
+const data = (["https://raw.githubusercontent.com/Jasper-Nielsen/pokemon-data/main/pokemon.JSON",
+"https://raw.githubusercontent.com/MaryanQ/Data/main/squirtle.json",
+"https://raw.githubusercontent.com/Kemixd3/pokemon/main/pokemon.json",
+"https://zenkhalil.github.io/jsonapi/data.json", "https://raw.githubusercontent.com/Blue-Grizzly/Pokemon-data-app/main/objects.JSON","https://raw.githubusercontent.com/Hamse-LibaaxMose/Pokemon-data-projekt/main/Pokemon.json"
+,"https://raw.githubusercontent.com/HAlbergson/pokemon-projekt-gliscor/main/data/gliscor.JSON?token=GHSAT0AAAAAAB6YGLHZBETOHIIZ25U26TXCZBAT6BQ","https://raw.githubusercontent.com/jackvwh/CRUD-app/master/json-data.json","https://raw.githubusercontent.com/Jasper-Nielsen/pokemon-data/main/pokemon.JSON",
+"https://raw.githubusercontent.com/sassnoe/Data-pokemon-app/main/umbreon.json", "https://github.com/JonLundby/data-aflevering/blob/main/trevenant.json","https://raw.githubusercontent.com/LauritsSchou/pokemon-database/main/psyduck.json",
+"https://raw.githubusercontent.com/LisePetculescu/pokemon-charmander/main/charmander.json", "https://raw.githubusercontent.com/Slumhunden/CRUD-HARRYPOTTER/main/gyarados.json", "https://github.com/magnutron/pokedexio/blob/main/blastoise.json",
+"https://raw.githubusercontent.com/Jaes98/PokemonDataApp_Marcus/main/mewtwo.json", "https://raw.githubusercontent.com/MaryanQ/Data/main/squirtle.json", "https://raw.githubusercontent.com/OliKirk/Poke-Project-Object/main/data/pok%C3%A9mon.json?token=GHSAT0AAAAAAB6HFM3GYO32IIUDC3EB52NIZA4F3ZA", 
+"https://raw.githubusercontent.com/PalleGregersJensen/Pokemon-projekt/main/data/wattrel.json", "https://raw.githubusercontent.com/sebbex1337/Pokemon-app/main/rayquaza.json",
+"https://raw.githubusercontent.com/SS4nd/Pokemon/main/data.json", "https://raw.githubusercontent.com/sebbex1337/Pokemon-app/main/sunflora.json", "https://github.com/tora0001/pokemon-data/blob/main/data/pokemon.json",
+"https://raw.githubusercontent.com/Adelkilde/Data-Pokemon/main/mew.json", "https://raw.githubusercontent.com/yousra-alt/pokemon.projekt.data-struktur./main/data/pokemon.json" ]);
+
+
+
+function quickAddPokemon(data) {
+  const pokemonRef = firebase.database().ref('pokemon');
+  
+  if (Array.isArray(data)) {
+    // Handle array of URLs and/or JSON objects
+    data.forEach(datum => quickAddPokemon(datum));
+  } else {
+    // Handle single URL or JSON object
+    const newPokemonRef = pokemonRef.push();
+  
+    // Check if the data is a URL or a JSON object
+    if (typeof data === 'string') {
+      // Fetch the JSON data from the URL
+      fetch(data)
+        .then(response => response.json())
+        .then(json => {
+
+  pokemonRef.orderByChild("name").equalTo(json.name).once("value", snapshot => {
+          if (snapshot.exists()) {
+            console.log("A pokemon with this name already exists in the database.");
+          } else {
+            // Save the JSON data to the database
+            const newPokemonRef = pokemonRef.push();
+            newPokemonRef.set({
+              name: json.name || null,
+              description: json.description || null,
+              ability: json.ability || null,
+              image: json.image || null,
+              footprint: json.footprint || null,
+              dexindex: json.dexindex || null,
+              type: json.type || null,
+              subtype: json.subtype || null,
+              weaknesses: json.weaknesses || null,
+              gender: json.gender || null,
+              weight: json.weight || null,
+              height: json.height || null,
+              generation: json.generation || null,
+              spilversion: json.spilversion || null,
+              canEvolve: json.canEvolve || null,
+              statsHP: json.statsHP || null,
+              statsAttack: json.statsAttack || null,
+              statsDefence: json.statsDefence || null,
+              statsSpecialAttack: json.statsSpecialAttack || null,
+              statsSpecialDefence: json.statsSpecialDefence || null,
+              statsSpeed: json.statsSpeed || null,
+            });
+            console.log("Pokemon added to the database.");
+          }
+        });
+      })
+    
+      .catch(error => console.error(error));
+    } else {
+      // Save the JSON data to the database
+      pokemonRef.orderByChild("name").equalTo(data.name).once("value", snapshot => {
+        if (snapshot.exists()) {
+          console.log("A pokemon with this name already exists in the database.");
+        } else {
+          // Save the JSON data to the database
+          const newPokemonRef = pokemonRef.push();
+          newPokemonRef.set({
+            name: data.name || null,
+            description: data.description || null,
+            ability: data.ability || null,
+            image: data.image || null,
+            footprint: data.footprint || null,
+            dexindex: data.dexindex || null,
+            type: data.type || null,
+            subtype: data.subtype || null,
+            weaknesses: data.weaknesses || null,
+            gender: data.gender || null,
+            weight: data.weight || null,
+            height: data.height || null,
+            generation: data.generation || null,
+            spilversion: data.spilversion || null,
+            canEvolve: data.canEvolve || null,
+            statsHP: data.statsHP || null,
+            statsAttack: data.statsAttack || null,
+            statsDefence: data.statsDefence || null,
+            statsSpecialAttack: data.statsSpecialAttack || null,
+            statsSpecialDefence: data.statsSpecialDefence || null,
+            statsSpeed: data.statsSpeed || null,
+          });
+          console.log("Pokemon added to the database.");
+        }
       });
-    })
-    .catch(error => console.error(error));
+  }
 }
+}
+
+
+
+quickAddPokemon(data)
+
 
 //quickAddPokemon();
 const newPokemon = {
@@ -215,14 +295,18 @@ function deletePokemon(id) {
 }
 
 // Display pokemon cards
+// Display pokemon cards
 var pokemonCards = document.getElementById("pokemon-cards");
 database.ref('pokemon').on('child_added', function(data) {
   var pokemon = data.val();
   var card = document.createElement("div");
   card.className = "pokemon-card";
   card.innerHTML = "<h2>" + pokemon.name + "</h2>" +
-  "<p>Type: " + pokemon.type + "</p>" +
   "<img src='" + pokemon.image + "'>" +
+  "<button class='view-more-btn'>View More</button>";
+  pokemonCards.appendChild(card);
+  var dialog = document.createElement("dialog");
+  dialog.innerHTML = "<p>Type: " + pokemon.type + "</p>" +
   "<p>Description: " + pokemon.description + "</p>" +
   "<p>Ability: " + pokemon.ability + "</p>" +
   "<p>Footprint: " + pokemon.footprint + "</p>" +
@@ -237,10 +321,23 @@ database.ref('pokemon').on('child_added', function(data) {
   "<p>Can Evolve: " + pokemon.canEvolve + "</p>" +
   "<p>Stats - HP: " + pokemon.statsHP + ", Attack: " + pokemon.statsAttack + ", Defense: " + pokemon.statsDefence + ", Special Attack: " + pokemon.statsSpecialAttack + ", Special Defense: " + pokemon.statsSpecialDefence + ", Speed: " + pokemon.statsSpeed + "</p>" +
   "<button onclick='editPokemon(\"" + data.key + "\", \"" + pokemon.name + "\", \"" + pokemon.type + "\", \"" + pokemon.image + "\", \"" + pokemon.description + "\", \"" + pokemon.ability + "\", \"" + pokemon.footprint + "\", \"" + pokemon.dexindex + "\", \"" + pokemon.subtype + "\", \"" + pokemon.weaknesses + "\", \"" + pokemon.gender + "\", \"" + pokemon.weight + "\", \"" + pokemon.height + "\", \"" + pokemon.generation + "\", \"" + pokemon.spilversion + "\", \"" + pokemon.canEvolve + "\", \"" + pokemon.statsHP + "\", \"" + pokemon.statsAttack + "\", \"" + pokemon.statsDefence + "\", \"" + pokemon.statsSpecialAttack + "\", \"" + pokemon.statsSpecialDefence + "\", \"" + pokemon.statsSpeed + "\")'>Edit</button>" +
-  "<button onclick='deletePokemon(\"" + data.key + "\")'>Delete</button>";
-pokemonCards.appendChild(card);
-
+  "<button onclick='deletePokemon(\"" + data.key + "\")'>Delete</button>" + "<button class='close-dialog-btn'>Close</button>"; ;
+  dialog.id = "dialog-" + data.key;
+  card.appendChild(dialog);
+  
+  var viewMoreBtn = card.querySelector('.view-more-btn');
+  viewMoreBtn.addEventListener('click', function() {
+    var dialog = document.querySelector("#dialog-" + data.key);
+    dialog.showModal();
+  });
+  var closeDialogBtn = dialog.querySelector(".close-dialog-btn");
+  closeDialogBtn.addEventListener("click", function() {
+    dialog.close();
+  });
+  
+  
 });
+
 
 // Edit pokemon data
 // Edit pokemon data
