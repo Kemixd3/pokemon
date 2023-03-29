@@ -336,7 +336,7 @@ database.ref('pokemon').on('child_added', function(data) {
   var pokemon = data.val();
   var card = document.createElement("div");
   card.className = "pokemon-card";
-  card.innerHTML = "<h2>" + pokemon.name + "</h2>" + "<img src='" + pokemon.footprint + "' style='width: 50px; height: 50px;'>" +
+  card.innerHTML = "<h2>" + "#" + pokemon.dexindex + " " + pokemon.name + "</h2>" + "<img src='" + pokemon.footprint + "' style='width: 50px; height: 50px;'>" +
   "<img src='" + pokemon.image + "'>" +
   "<button class='view-more-btn'>View More</button>";
   pokemonCards.appendChild(card);
