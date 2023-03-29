@@ -270,13 +270,14 @@ async function getPokemons(url) {
   return data;
 }
 
-//quickAddPokemon();
+
+
 const newPokemon = {
   name: "Diglett",
   description: "Diglett is a small, mole-like Pokémon. It spends much of its time underground, and has very thin skin, which makes it sensitive to sunlight. It has two small eyes and a round pink nose.",
   ability: "Sand Veil",
   image: "https://cdn.bulbagarden.net/upload/thumb/8/89/050Diglett.png/250px-050Diglett.png",
-  footprint: "https://cdn.bulbagarden.net/upload/6/66/050MS8.png",
+  footprint: "https://archives.bulbagarden.net/media/upload/5/5e/F0050.png",
   dexindex: 50,
   type: "Ground",
   subtype: "N/A",
@@ -287,12 +288,12 @@ const newPokemon = {
   generation: 1,
   spilversion: "Pokémon Red, Green, Blue",
   canEvolve: true,
-  statsHP: 5,
-  statsAttack: 8,
-  statsDefence: 10,
-  statsSpecialAttack: 3,
-  statsSpecialDefence: 6,
-  statsSpeed: 10
+  statsHP: 2,
+  statsAttack: 2,
+  statsDefence: 1,
+  statsSpecialAttack: 7,
+  statsSpecialDefence: 4,
+  statsSpeed: 6
 };
 
 
@@ -371,7 +372,7 @@ database.ref('pokemon').on('child_added', function(data) {
     dialog.close();
   });
   
-  
+
 });
 
 
