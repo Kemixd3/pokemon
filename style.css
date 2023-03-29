@@ -49,3 +49,80 @@ form {
     max-width: 100%;
   }
   
+
+
+  
+
+
+#minimize-form:hover {
+  background-color: #ffde3e;
+  box-shadow: 0px 8px 12px rgba(0, 0, 0, 0.15);
+  transform: translateY(-2px);
+}
+
+#minimize-form:active {
+  background-color: #ffc107;
+  box-shadow: none;
+  transform: translateY(0px);
+}
+
+
+
+  .pokemon-card {
+background-color: #fff;
+border-radius: 10px;
+box-shadow: 0 2px 4px rgba(0,0,0,.1);
+display: inline-block;
+margin: 10px;
+max-width: 300px;
+overflow: hidden;
+text-align: center;
+}
+
+.pokemon-card h2 {
+margin-top: 0;
+}
+
+.pokemon-card img {
+width: 200px;
+height: 200px;
+object-fit: contain;
+}
+
+.view-more-btn {
+background-color: indigo;
+border: none;
+color: white;
+padding: 10px 20px;
+text-align: center;
+text-decoration: none;
+display: inline-block;
+font-size: 16px;
+margin-top: 10px;
+border-radius: 5px;
+cursor: pointer;
+transition: background-color 0.3s ease;
+}
+
+.view-more-btn:hover {
+background-color: #ff6659;
+}
+
+.close-dialog-btn {
+background-color: #ccc;
+border: none;
+color: #fff;
+padding: 10px 20px;
+text-align: center;
+text-decoration: none;
+display: inline-block;
+font-size: 16px;
+margin-top: 10px;
+border-radius: 5px;
+cursor: pointer;
+transition: background-color 0.3s ease;
+}
+
+.close-dialog-btn:hover {
+background-color: #999;
+}

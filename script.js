@@ -1,4 +1,4 @@
-// Initialize Firebase
+//Initialize Firebase realtime database
 var firebaseConfig = {
   apiKey: "AIzaSyBuWPU0zqYMOcDZqhBj6lYhJ1Clo8hoFfI",
   authDomain: "javascriptgame-4e4c9.firebaseapp.com",
@@ -11,12 +11,12 @@ var firebaseConfig = {
 };
 firebase.initializeApp(firebaseConfig);
 
-// Get a reference to the database service
+//Get a reference to the database service
 var database = firebase.database();
 
-// Handle form submission
+//Handle form submission
 function addPokemon() {
-  // Get form values
+  //Get form values from the form
   var name = document.getElementById("name").value;
   var description = document.getElementById("description").value;
   var ability = document.getElementById("ability").value;
@@ -39,7 +39,7 @@ function addPokemon() {
   var statsSpecialDefence = document.getElementById("statsSpecialDefence").value;
   var statsSpeed = document.getElementById("statsSpeed").value;
   
-  // Push pokemon data to the database
+  //Push pokemon data to the database
   database.ref('pokemon').push({
     name: name,
     description: description,
@@ -64,7 +64,7 @@ function addPokemon() {
     statsSpeed: statsSpeed
   });
   
-  // Clear form fields
+  //Clear form fields
   document.getElementById("name").value = "";
   document.getElementById("description").value = "";
   document.getElementById("ability").value = "";
@@ -92,7 +92,7 @@ function addPokemon() {
 
 const pokemonForm = document.getElementById('pokemon-form');
 
-// Call toggleForm to minimize the form initially
+//Call toggleForm to minimize the form initially
 toggleForm(pokemonForm);
 
 
@@ -104,7 +104,7 @@ function toggleForm() {
     minimizeButton.innerHTML = "Minimize";
   } else {
     form.style.display = "none";
-    minimizeButton.innerHTML = "Expand";
+    minimizeButton.innerHTML = "ADD OR UPDATE POKEMON";
   }
 }
 
@@ -117,38 +117,71 @@ function getJsonFromUrl(url) {
 
 
 
+//const data = (["https://cederdorff.github.io/dat-js/05-data/pokemons.json" ]);
 
+async function quickAddPokemon(data) {
 
-
-
-const data = (["https://raw.githubusercontent.com/Jasper-Nielsen/pokemon-data/main/pokemon.JSON",
-"https://raw.githubusercontent.com/MaryanQ/Data/main/squirtle.json",
-"https://raw.githubusercontent.com/Kemixd3/pokemon/main/pokemon.json",
-"https://zenkhalil.github.io/jsonapi/data.json", "https://raw.githubusercontent.com/Blue-Grizzly/Pokemon-data-app/main/objects.JSON","https://raw.githubusercontent.com/Hamse-LibaaxMose/Pokemon-data-projekt/main/Pokemon.json"
-,"https://raw.githubusercontent.com/HAlbergson/pokemon-projekt-gliscor/main/data/gliscor.JSON?token=GHSAT0AAAAAAB6YGLHZBETOHIIZ25U26TXCZBAT6BQ","https://raw.githubusercontent.com/jackvwh/CRUD-app/master/json-data.json","https://raw.githubusercontent.com/Jasper-Nielsen/pokemon-data/main/pokemon.JSON",
-"https://raw.githubusercontent.com/sassnoe/Data-pokemon-app/main/umbreon.json", "https://github.com/JonLundby/data-aflevering/blob/main/trevenant.json","https://raw.githubusercontent.com/LauritsSchou/pokemon-database/main/psyduck.json",
-"https://raw.githubusercontent.com/LisePetculescu/pokemon-charmander/main/charmander.json", "https://raw.githubusercontent.com/Slumhunden/CRUD-HARRYPOTTER/main/gyarados.json", "https://github.com/magnutron/pokedexio/blob/main/blastoise.json",
-"https://raw.githubusercontent.com/Jaes98/PokemonDataApp_Marcus/main/mewtwo.json", "https://raw.githubusercontent.com/MaryanQ/Data/main/squirtle.json", "https://raw.githubusercontent.com/OliKirk/Poke-Project-Object/main/data/pok%C3%A9mon.json?token=GHSAT0AAAAAAB6HFM3GYO32IIUDC3EB52NIZA4F3ZA", 
-"https://raw.githubusercontent.com/PalleGregersJensen/Pokemon-projekt/main/data/wattrel.json", "https://raw.githubusercontent.com/sebbex1337/Pokemon-app/main/rayquaza.json",
-"https://raw.githubusercontent.com/SS4nd/Pokemon/main/data.json", "https://raw.githubusercontent.com/sebbex1337/Pokemon-app/main/sunflora.json", "https://github.com/tora0001/pokemon-data/blob/main/data/pokemon.json",
-"https://raw.githubusercontent.com/Adelkilde/Data-Pokemon/main/mew.json", "https://raw.githubusercontent.com/yousra-alt/pokemon.projekt.data-struktur./main/data/pokemon.json" ]);
-
-
-
-function quickAddPokemon(data) {
+//the firebase database refrence
   const pokemonRef = firebase.database().ref('pokemon');
+  //getting the data 
+  const pokemons = await getPokemons("https://cederdorff.github.io/dat-js/05-data/pokemons.json");
+  //sorting the data by dexindex
+  pokemons.sort(function (a, b) {
+    return a.dexindex - b.dexindex;
+  });
+  //making sure that we can have 2 of the same dexindex
+  for (const pokemon of pokemons) {
+    try {
+         const existingPokemon = await pokemonRef.orderByChild("dexindex").equalTo(pokemon.dexindex).once("value");
+    if (existingPokemon.exists()) {
+      console.log(`Pokemon with dexindex ${pokemon.dexindex} already exists in the database.`);
+      continue; //skip to the next iteration of the loop
+    }
+       const newPokemonRef = pokemonRef.push();
+    newPokemonRef.set({
+      name: pokemon.name || null,
+      description: pokemon.description || null,
+      ability: pokemon.ability || null,
+      image: pokemon.image || null,
+      footprint: pokemon.footprint || null,
+      dexindex: pokemon.dexindex || null,
+      type: pokemon.type || null,
+      subtype: pokemon.subtype || null,
+      weaknesses: pokemon.weaknesses || null,
+      gender: pokemon.gender || null,
+      weight: pokemon.weight || null,
+      height: pokemon.height || null,
+      generation: pokemon.generation || null,
+      spilversion: pokemon.spilversion || null,
+      canEvolve: pokemon.canEvolve || null,
+      statsHP: pokemon.statsHP || null,
+      statsAttack: pokemon.statsAttack || null,
+      statsDefence: pokemon.statsDefence || null,
+      statsSpecialAttack: pokemon.statsSpecialAttack || null,
+      statsSpecialDefence: pokemon.statsSpecialDefence || null,
+      statsSpeed: pokemon.statsSpeed || null,
+    });
+
+      console.log(pokemon)
+
+    } catch (error) {
+      console.log(`${pokemon.name} ERROR: ${error}`);
+      
+    }
+  }
+
   
-  if (Array.isArray(data)) {
-    // Handle array of URLs and/or JSON objects
-    data.forEach(datum => quickAddPokemon(datum));
+  if (Array.isArray(data1)) {
+    //Handle array of URLs and/or JSON objects
+    data1.forEach(datum => quickAddPokemon(datum));
   } else {
-    // Handle single URL or JSON object
+    //Handle single URL or JSON object
     const newPokemonRef = pokemonRef.push();
   
     // Check if the data is a URL or a JSON object
-    if (typeof data === 'string') {
-      // Fetch the JSON data from the URL
-      fetch(data)
+    if (typeof data1 === 'string') {
+      //Fetch the JSON data from the URL
+      fetch(data1)
         .then(response => response.json())
         .then(json => {
 
@@ -156,7 +189,7 @@ function quickAddPokemon(data) {
           if (snapshot.exists()) {
             console.log("A pokemon with this name already exists in the database.");
           } else {
-            // Save the JSON data to the database
+            //Save the JSON data to the database
             const newPokemonRef = pokemonRef.push();
             newPokemonRef.set({
               name: json.name || null,
@@ -188,35 +221,36 @@ function quickAddPokemon(data) {
     
       .catch(error => console.error(error));
     } else {
-      // Save the JSON data to the database
+      //save the JSON data to the database
       pokemonRef.orderByChild("name").equalTo(data.name).once("value", snapshot => {
         if (snapshot.exists()) {
           console.log("A pokemon with this name already exists in the database.");
         } else {
-          // Save the JSON data to the database
+          //Save the JSON data to the database
+          
           const newPokemonRef = pokemonRef.push();
           newPokemonRef.set({
-            name: data.name || null,
-            description: data.description || null,
-            ability: data.ability || null,
-            image: data.image || null,
-            footprint: data.footprint || null,
-            dexindex: data.dexindex || null,
-            type: data.type || null,
-            subtype: data.subtype || null,
-            weaknesses: data.weaknesses || null,
-            gender: data.gender || null,
-            weight: data.weight || null,
-            height: data.height || null,
-            generation: data.generation || null,
-            spilversion: data.spilversion || null,
-            canEvolve: data.canEvolve || null,
-            statsHP: data.statsHP || null,
-            statsAttack: data.statsAttack || null,
-            statsDefence: data.statsDefence || null,
-            statsSpecialAttack: data.statsSpecialAttack || null,
-            statsSpecialDefence: data.statsSpecialDefence || null,
-            statsSpeed: data.statsSpeed || null,
+            name: json.name || null,
+            description: json.description || null,
+            ability: json.ability || null,
+            image: json.image || null,
+            footprint: json.footprint || null,
+            dexindex: json.dexindex || null,
+            type: json.type || null,
+            subtype: json.subtype || null,
+            weaknesses: json.weaknesses || null,
+            gender: json.gender || null,
+            weight: json.weight || null,
+            height: json.height || null,
+            generation: json.generation || null,
+            spilversion: json.spilversion || null,
+            canEvolve: json.canEvolve || null,
+            statsHP: json.statsHP || null,
+            statsAttack: json.statsAttack || null,
+            statsDefence: json.statsDefence || null,
+            statsSpecialAttack: json.statsSpecialAttack || null,
+            statsSpecialDefence: json.statsSpecialDefence || null,
+            statsSpeed: json.statsSpeed || null,
           });
           console.log("Pokemon added to the database.");
         }
@@ -226,9 +260,15 @@ function quickAddPokemon(data) {
 }
 
 
+//calling the functions to bring in json data
+quickAddPokemon()
+//fetching the data from the URL
+async function getPokemons(url) {
+  const response = await fetch(url);
 
-quickAddPokemon(data)
-
+  const data = await response.json();
+  return data;
+}
 
 //quickAddPokemon();
 const newPokemon = {
@@ -256,12 +296,7 @@ const newPokemon = {
 };
 
 
-
-
-
-
-
-// Update pokemon data
+//Update pokemon data function
 function updatePokemon(id, name, type, image, description, ability, footprint, dexindex, subtype, weaknesses, gender, weight, height, generation, spilversion, canEvolve, statsHP, statsAttack, statsDefence, statsSpecialAttack, statsSpecialDefence, statsSpeed) {
   database.ref('pokemon/' + id).update({
     name: name,
@@ -289,19 +324,18 @@ function updatePokemon(id, name, type, image, description, ability, footprint, d
 }
 
 
-// Delete pokemon data
+//Delete pokemon data function using id
 function deletePokemon(id) {
   database.ref('pokemon/' + id).remove();
 }
 
-// Display pokemon cards
-// Display pokemon cards
+//Display pokemon cards and dialog
 var pokemonCards = document.getElementById("pokemon-cards");
 database.ref('pokemon').on('child_added', function(data) {
   var pokemon = data.val();
   var card = document.createElement("div");
   card.className = "pokemon-card";
-  card.innerHTML = "<h2>" + pokemon.name + "</h2>" +
+  card.innerHTML = "<h2>" + pokemon.name + "</h2>" + "<img src='" + pokemon.footprint + "' style='width: 50px; height: 50px;'>" +
   "<img src='" + pokemon.image + "'>" +
   "<button class='view-more-btn'>View More</button>";
   pokemonCards.appendChild(card);
@@ -309,7 +343,7 @@ database.ref('pokemon').on('child_added', function(data) {
   dialog.innerHTML = "<p>Type: " + pokemon.type + "</p>" +
   "<p>Description: " + pokemon.description + "</p>" +
   "<p>Ability: " + pokemon.ability + "</p>" +
-  "<p>Footprint: " + pokemon.footprint + "</p>" +
+  "<img src='" + pokemon.footprint + "' style='width: 50px; height: 50px;'>" +
   "<p>Dex Index: " + pokemon.dexindex + "</p>" +
   "<p>Subtype: " + pokemon.subtype + "</p>" +
   "<p>Weaknesses: " + pokemon.weaknesses + "</p>" +
@@ -320,8 +354,10 @@ database.ref('pokemon').on('child_added', function(data) {
   "<p>Game Version: " + pokemon.spilversion + "</p>" +
   "<p>Can Evolve: " + pokemon.canEvolve + "</p>" +
   "<p>Stats - HP: " + pokemon.statsHP + ", Attack: " + pokemon.statsAttack + ", Defense: " + pokemon.statsDefence + ", Special Attack: " + pokemon.statsSpecialAttack + ", Special Defense: " + pokemon.statsSpecialDefence + ", Speed: " + pokemon.statsSpeed + "</p>" +
-  "<button onclick='editPokemon(\"" + data.key + "\", \"" + pokemon.name + "\", \"" + pokemon.type + "\", \"" + pokemon.image + "\", \"" + pokemon.description + "\", \"" + pokemon.ability + "\", \"" + pokemon.footprint + "\", \"" + pokemon.dexindex + "\", \"" + pokemon.subtype + "\", \"" + pokemon.weaknesses + "\", \"" + pokemon.gender + "\", \"" + pokemon.weight + "\", \"" + pokemon.height + "\", \"" + pokemon.generation + "\", \"" + pokemon.spilversion + "\", \"" + pokemon.canEvolve + "\", \"" + pokemon.statsHP + "\", \"" + pokemon.statsAttack + "\", \"" + pokemon.statsDefence + "\", \"" + pokemon.statsSpecialAttack + "\", \"" + pokemon.statsSpecialDefence + "\", \"" + pokemon.statsSpeed + "\")'>Edit</button>" +
-  "<button onclick='deletePokemon(\"" + data.key + "\")'>Delete</button>" + "<button class='close-dialog-btn'>Close</button>"; ;
+  "<button onclick='editPokemon(\"" + data.key + "\", \"" + pokemon.name + "\", \"" + pokemon.type + "\", \"" + pokemon.image + "\", \"" + pokemon.description + "\", \"" + pokemon.ability + "\", \"" + pokemon.footprint + "\", \"" + pokemon.dexindex + "\", \"" + pokemon.subtype + "\", \"" + pokemon.weaknesses + "\", \"" + pokemon.gender + "\", \"" + pokemon.weight + "\", \"" + pokemon.height + "\", \"" + pokemon.generation + "\", \"" + pokemon.spilversion + "\", \"" + pokemon.canEvolve + "\", \"" + pokemon.statsHP + "\", \"" + pokemon.statsAttack + "\", \"" + pokemon.statsDefence + "\", \"" + pokemon.statsSpecialAttack + "\", \"" + pokemon.statsSpecialDefence + "\", \"" + pokemon.statsSpeed + "\")' style='cursor: pointer; background-color: #ffcb05; color: #333; padding: 10px 20px; text-align: center; text-decoration: none; display: inline-block; font-size: 16px; margin-right: 10px; border: none; border-radius: 5px;'>Edit</button>" +
+"<button onclick='deletePokemon(\"" + data.key + "\")' style=' cursor: pointer; background-color: #f44336; color: white; padding: 10px 20px; text-align: center; text-decoration: none; display: inline-block; font-size: 16px; margin-right: 10px; border: none; border-radius: 5px;'>Delete</button>" +
+"<button class='close-dialog-btn' style=' cursor: pointer; background-color: #ccc; color: #333; padding: 10px 20px; text-align: center; text-decoration: none; display: inline-block; font-size: 16px; border: none; border-radius: 5px;'>Close</button>";
+ ;
   dialog.id = "dialog-" + data.key;
   card.appendChild(dialog);
   
@@ -339,8 +375,7 @@ database.ref('pokemon').on('child_added', function(data) {
 });
 
 
-// Edit pokemon data
-// Edit pokemon data
+//Edit pokemon data
 function editPokemon(id, name, type, image, description, ability, footprint, dexindex, subtype, weaknesses, gender, weight, height, generation, spilversion, canEvolve, statsHP, statsAttack, statsDefence, statsSpecialAttack, statsSpecialDefence, statsSpeed) {
   document.getElementById("name").value = name;
   document.getElementById("type").value = type;

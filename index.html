@@ -2,11 +2,14 @@
 <html>
   <head>
     <link rel="stylesheet" href="style.css" type="text/css">
-    <title>Pokemon Cards</title>
+    <title>Pokemon Cards by Nikolai Berthesen, DATAv2</title>
   </head>
   <body>
-    <button id="minimize-form" type="button" onclick="toggleForm()">Minimize</button>
+    <button id="minimize-form" type="button" onclick="toggleForm()" style="background-color: #ffcb05; border: none; color: #333; font-size: 20px; padding: 12px 24px; text-align: center; text-decoration: none; display: inline-block; margin: 20px; cursor: pointer; border-radius: 8px; box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.15); transition: all 0.2s ease-in-out;">Minimize</button>
     <form id="pokemon-form" style="display:block;" hidden>
+
+      <h3>Here you can add a new pokemon to the deck by clicking the "Add Pokemon" button</h3> 
+      <h3>To edit an existing pokemon, click view more on the pokemon card and then edit inside this form and update by clicking the "Update" button:</h3>
       <label for="name">Name:</label>
       <input type="text" id="name" name="name" required><br>
     
@@ -74,7 +77,11 @@
       <input type="number" id="statsSpeed" name="statsSpeed" required><br>
     
       <button id="pokemon-add" type="button" onclick="addPokemon()">Add Pokemon</button>
-      <button id="update-pokemon-button" type="submit" style="display:none;">Update</button>
+      <button id="update-pokemon-button" type="submit" style="display:none; border: none; background-color: #4CAF50; color: white; padding: 10px 20px; text-align: center; text-decoration: none; display: inline-block; font-size: 16px; margin: 10px; cursor: pointer; border-radius: 5px;">
+        <span style="display: inline-block;"><i class="fas fa-edit"></i></span>
+        <span>Update</span>
+      </button>
+      
     </form>
     
     
@@ -115,64 +122,6 @@
       const analytics = getAnalytics(app);
     </script>
   <style type="text/css">
-    .pokemon-card {
-  background-color: #fff;
-  border-radius: 10px;
-  box-shadow: 0 2px 4px rgba(0,0,0,.1);
-  display: inline-block;
-  margin: 10px;
-  max-width: 300px;
-  overflow: hidden;
-  text-align: center;
-}
-
-.pokemon-card h2 {
-  margin-top: 0;
-}
-
-.pokemon-card img {
-  width: 200px;
-  height: 200px;
-  object-fit: contain;
-}
-
-.view-more-btn {
-  background-color: #f44336;
-  border: none;
-  color: white;
-  padding: 10px 20px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 16px;
-  margin-top: 10px;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-.view-more-btn:hover {
-  background-color: #ff6659;
-}
-
-.close-dialog-btn {
-  background-color: #ccc;
-  border: none;
-  color: #fff;
-  padding: 10px 20px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 16px;
-  margin-top: 10px;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-.close-dialog-btn:hover {
-  background-color: #999;
-}
 
     </style>
   
