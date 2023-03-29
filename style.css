@@ -105,7 +105,7 @@ transition: background-color 0.3s ease;
 }
 
 .view-more-btn:hover {
-background-color: #ff6659;
+background-color: green;
 }
 
 .close-dialog-btn {
