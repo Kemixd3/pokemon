@@ -1,3 +1,5 @@
+"use strict";
+
 //Initialize Firebase realtime database
 var firebaseConfig = {
   apiKey: "AIzaSyBuWPU0zqYMOcDZqhBj6lYhJ1Clo8hoFfI",
@@ -107,14 +109,6 @@ function toggleForm() {
     minimizeButton.innerHTML = "ADD OR UPDATE POKEMON";
   }
 }
-
-
-function getJsonFromUrl(url) {
-  const response = fetch(url);
-  const data = response.json();
-  return data;
-}
-
 
 
 //const data = (["https://cederdorff.github.io/dat-js/05-data/pokemons.json" ]);
