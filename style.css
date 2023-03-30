@@ -133,3 +133,36 @@ background-color: #999;
   grid-template-rows: auto;
   grid-gap: 20px;
 }
+
+
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+  background-color: #f7f7f7;
+}
+
+
+header, footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 100px;
+  background-color: #ffcb05;
+  padding: 0 20px;
+}
+
+header h1, footer h3 {
+  color: #333;
+}
+
+
+
+footer .pokeball:before, footer .pokeball:after {
+  transform: scaleX(-1);
+}
+
+
+
+
